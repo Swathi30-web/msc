@@ -1,33 +1,117 @@
+
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 
-export const http = axios.create({ baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3001' });
+// Render backend URL
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://msc-41rk.onrender.com';
 
+export const http = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeout: 30000,
+});
+
+// Generic API methods
 export const api = {
-  list: <T,>(r: string, params?: object) => http.get<T[]>('/' + r, { params }).then((x) => x.data),
-  create: <T,>(r: string, body: object) => http.post<T>('/' + r, body).then((x) => x.data),
-  update: <T,>(r: string, id: number, body: object) => http.patch<T>(`/${r}/${id}`, body).then((x) => x.data),
-  remove: (r: string, id: number) => http.delete(`/${r}/${id}`),
+  list: <T,>(resource: string, params?: object): Promise<T[]> =>
+    http
+      .get<T[]>(`/${resource}`, { params })
+      .then((response) => response.data),
+
+  getById: <T,>(resource: string, id: number | string): Promise<T> =>
+    http
+      .get<T>(`/${resource}/${id}`)
+      .then((response) => response.data),
+
+  create: <T,>(resource: string, body: object): Promise<T> =>
+    http
+      .post<T>(`/${resource}`, body)
+      .then((response) => response.data),
+
+  update: <T,>(
+    resource: string,
+    id: number | string,
+    body: object
+  ): Promise<T> =>
+    http
+      .patch<T>(`/${resource}/${id}`, body)
+      .then((response) => response.data),
+
+  remove: (resource: string, id: number | string) =>
+    http.delete(`/${resource}/${id}`),
 };
 
-export const errMsg = (e: unknown) =>
-  axios.isAxiosError(e)
-    ? e.response ? `Server error ${e.response.status}` : 'Cannot reach API. Is json-server running (npm run api)?'
-    : (e as Error).message;
+// Error message helper
+export const errMsg = (error: unknown): string => {
+  if (axios.isAxiosError(error)) {
+    if (error.response) {
+      return `Server error ${error.response.status}: ${
+        error.response.statusText || 'Request failed'
+      }`;
+    }
 
+    if (error.code === 'ECONNABORTED') {
+      return 'API request timed out. Please try again.';
+    }
+
+    return 'Cannot reach API. Check your internet connection or Render server.';
+  }
+
+  return error instanceof Error
+    ? error.message
+    : 'An unexpected error occurred.';
+};
+
+// Activity logger
 export const logActivity = (message: string) =>
-  api.create('activities', { message, date: new Date().toISOString() }).catch(() => undefined);
+  api
+    .create('activities', {
+      message,
+      date: new Date().toISOString(),
+    })
+    .catch(() => undefined);
 
-export function useList<T>(resource: string, params?: Record<string, unknown>) {
+// Generic list hook
+export function useList<T>(
+  resource: string,
+  params?: Record<string, unknown>
+) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
   const key = JSON.stringify(params ?? {});
+
   const reload = useCallback(async () => {
-    try { setData(await api.list<T>(resource, JSON.parse(key))); setError(''); }
-    catch (e) { setError(errMsg(e)); }
-    finally { setLoading(false); }
+    setLoading(true);
+
+    try {
+      const result = await api.list<T>(
+        resource,
+        JSON.parse(key)
+      );
+
+      setData(result);
+      setError('');
+    } catch (error: unknown) {
+      setError(errMsg(error));
+    } finally {
+      setLoading(false);
+    }
   }, [resource, key]);
-  useEffect(() => { reload(); }, [reload]);
-  return { data, loading, error, reload };
+
+  useEffect(() => {
+    void reload();
+  }, [reload]);
+
+  return {
+    data,
+    loading,
+    error,
+    reload,
+  };
 }
