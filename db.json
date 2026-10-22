@@ -1,0 +1,273 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "name": "Admin",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "username": "reception",
+      "password": "recep123",
+      "name": "Priya (Reception)",
+      "role": "receptionist"
+    },
+    {
+      "id": 3,
+      "username": "tech",
+      "password": "tech123",
+      "name": "Ravi Kumar",
+      "role": "technician",
+      "technicianId": 1
+    },
+    {
+      "id": 4,
+      "username": "customer",
+      "password": "cust123",
+      "name": "Arun Prakash",
+      "role": "customer",
+      "customerId": 1
+    }
+  ],
+  "customers": [
+    {
+      "id": 1,
+      "name": "Arun Prakash",
+      "phone": "9840012345",
+      "email": "arun@example.com",
+      "address": "12 Anna Nagar, Chennai"
+    },
+    {
+      "id": 2,
+      "name": "Meena Devi",
+      "phone": "9841198765",
+      "email": "meena@example.com",
+      "address": "5 T Nagar, Chennai"
+    },
+    {
+      "id": 3,
+      "name": "Karthik R",
+      "phone": "9444411122",
+      "email": "swathisudar623@gmail.com",
+      "address": "88 Adyar, Chennai"
+    }
+  ],
+  "devices": [
+    {
+      "id": 1,
+      "customerId": 1,
+      "brand": "Samsung",
+      "model": "Galaxy S21",
+      "imei": "356938035643809",
+      "warrantyStart": "2023-01-10",
+      "warrantyExpiry": "2025-01-10"
+    },
+    {
+      "id": 2,
+      "customerId": 1,
+      "brand": "Apple",
+      "model": "iPhone 14",
+      "imei": "490154203237518",
+      "warrantyStart": "2025-11-01",
+      "warrantyExpiry": "2027-11-01"
+    },
+    {
+      "id": 3,
+      "customerId": 2,
+      "brand": "OnePlus",
+      "model": "Nord CE 3",
+      "imei": "867530912345678",
+      "warrantyStart": "2026-03-01",
+      "warrantyExpiry": "2027-03-01"
+    },
+    {
+      "id": 4,
+      "customerId": 3,
+      "brand": "Xiaomi",
+      "model": "Redmi Note 12",
+      "imei": "358240051111110",
+      "warrantyStart": "2024-05-01",
+      "warrantyExpiry": "2025-05-01"
+    }
+  ],
+  "technicians": [
+    {
+      "id": 1,
+      "name": "Ravi Kumar",
+      "phone": "9876543210",
+      "specialization": "Display & Board",
+      "available": true
+    },
+    {
+      "id": 2,
+      "name": "Anitha S",
+      "phone": "9876501234",
+      "specialization": "Battery & Charging",
+      "available": true
+    },
+    {
+      "id": 3,
+      "name": "Imran Khan",
+      "phone": "9812345678",
+      "specialization": "Software",
+      "available": true
+    }
+  ],
+  "serviceRequests": [
+    {
+      "id": 1,
+      "jobNo": "JC-10001",
+      "customerId": 1,
+      "deviceId": 1,
+      "issue": "Cracked screen",
+      "diagnosis": "Display assembly damaged",
+      "status": "Delivered",
+      "technicianId": 1,
+      "estimate": 3700,
+      "partsUsed": [
+        {
+          "partId": 1,
+          "name": "Display Assembly",
+          "qty": 1,
+          "price": 3200
+        }
+      ],
+      "createdAt": "2026-09-20T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "jobNo": "JC-10002",
+      "customerId": 2,
+      "deviceId": 3,
+      "issue": "Battery drains fast",
+      "diagnosis": "Battery health 62%",
+      "status": "Repair in Progress",
+      "technicianId": 2,
+      "estimate": 900,
+      "partsUsed": [],
+      "createdAt": "2026-10-08T09:30:00.000Z"
+    },
+    {
+      "id": 3,
+      "jobNo": "JC-10003",
+      "customerId": 1,
+      "deviceId": 2,
+      "issue": "Not charging",
+      "diagnosis": "",
+      "status": "Job Card Created",
+      "technicianId": null,
+      "estimate": 0,
+      "partsUsed": [],
+      "createdAt": "2026-10-12T14:15:00.000Z"
+    }
+  ],
+  "jobCards": [
+    {
+      "id": 1,
+      "jobNo": "JC-10001",
+      "serviceRequestId": 1,
+      "createdAt": "2026-09-20T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "jobNo": "JC-10002",
+      "serviceRequestId": 2,
+      "createdAt": "2026-10-08T09:30:00.000Z"
+    },
+    {
+      "id": 3,
+      "jobNo": "JC-10003",
+      "serviceRequestId": 3,
+      "createdAt": "2026-10-12T14:15:00.000Z"
+    }
+  ],
+  "spareParts": [
+    {
+      "id": 1,
+      "name": "Display Assembly",
+      "sku": "DSP-001",
+      "stock": 4,
+      "minStock": 2,
+      "price": 3200
+    },
+    {
+      "id": 2,
+      "name": "Battery",
+      "sku": "BAT-001",
+      "stock": 10,
+      "minStock": 3,
+      "price": 799
+    },
+    {
+      "id": 3,
+      "name": "Charging Port",
+      "sku": "CHG-001",
+      "stock": 2,
+      "minStock": 5,
+      "price": 350
+    },
+    {
+      "id": 4,
+      "name": "Back Glass",
+      "sku": "BGL-001",
+      "stock": 6,
+      "minStock": 2,
+      "price": 450
+    },
+    {
+      "id": 5,
+      "name": "Speaker",
+      "sku": "SPK-001",
+      "stock": 8,
+      "minStock": 3,
+      "price": 250
+    }
+  ],
+  "inventoryTransactions": [
+    {
+      "id": 1,
+      "partId": 1,
+      "partName": "Display Assembly",
+      "serviceRequestId": 1,
+      "jobNo": "JC-10001",
+      "qty": 1,
+      "type": "OUT",
+      "date": "2026-09-22T11:00:00.000Z"
+    }
+  ],
+  "invoices": [
+    {
+      "id": 1,
+      "invoiceNo": "INV-10001",
+      "serviceRequestId": 1,
+      "jobNo": "JC-10001",
+      "customerId": 1,
+      "serviceCharge": 500,
+      "partsCost": 3200,
+      "total": 3700,
+      "paidAmount": 3700,
+      "paymentStatus": "Paid",
+      "paymentMethod": "UPI",
+      "date": "2026-09-25"
+    }
+  ],
+  "payments": [
+    {
+      "id": 1,
+      "invoiceId": 1,
+      "invoiceNo": "INV-10001",
+      "amount": 3700,
+      "method": "UPI",
+      "date": "2026-09-25"
+    }
+  ],
+  "activities": [
+    {
+      "id": 1,
+      "message": "JC-10001: Ready for Pickup → Delivered",
+      "date": "2026-09-25T12:00:00.000Z"
+    }
+  ]
+}
